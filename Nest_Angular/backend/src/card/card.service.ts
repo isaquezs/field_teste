@@ -52,10 +52,10 @@ export class CardService {
   // }
 
   async update(id: number, userId: number, updateCardDto: UpdateCardDto) {
-    await this.userService.isConnectedToSwimlane(
-      userId,
-      updateCardDto.swimlaneId,
-    );
+    // await this.userService.isConnectedToSwimlane(
+    //   userId,
+    //   updateCardDto.swimlaneId,
+    // );
     return this.cardRepository.update(id, {
       nome: updateCardDto.nome,
       content: updateCardDto.conteudo,

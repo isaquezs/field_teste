@@ -72,7 +72,7 @@ export class SwimlaneService {
   }
 
   async remove(id: number, userId: number) {
-    await this.userService.isConnectedToSwimlane(userId, id);
+    // await this.userService.isConnectedToSwimlane(userId, id);
     return this.swimlaneRepository.delete(id);
   }
 }

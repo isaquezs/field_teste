@@ -1,0 +1,35 @@
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: #f7f7f7
+}
+
+.small-centered-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    width: 400px;
+    margin: 20px auto auto;
+    background-color: white;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+    padding: 24px 24px 24px;
+    border-radius: 5px;
+}
+
+form {
+    mat-form-field {
+        width: 100%;
+    }
+
+    input,
+    button {
+        width: 100%;
+    }
+}
