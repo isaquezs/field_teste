@@ -1,47 +1,76 @@
-import { Injectable } from '@nestjs/common';
-import { UpdateUsuarioDto } from './dto/update-user.dto';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { RegistrarDto } from 'src/auth/dto/register.dto';
+import { RegisterDto } from 'src/auth/dto/register.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
-    private RepositorioUsuario: Repository<User>,
-  ) { }
+    private userRepository: Repository<User>,
+  ) {}
 
-  create(criarUsuarioDTO: RegistrarDto) {
-    this.userService
+  create(createUserDto: RegisterDto) {
     const user = new User();
-    user.Email = criarUsuarioDTO.email;
-    user.PrimeiroNome = criarUsuarioDTO.primeiroNome;
-    user.UltimoNome = criarUsuarioDTO.ultimoNome;
-    user.senha = criarUsuarioDTO.senha;
-    return this.RepositorioUsuario.save(criarUsuarioDTO);
+    user.email = createUserDto.email;
+    user.nome = createUserDto.nome;
+    user.sobrenome = createUserDto.sobrenome;
+    user.senha = createUserDto.senha;
+    return this.userRepository.save(user);
   }
 
   findOne(id: number) {
-    return this.RepositorioUsuario.findOneBy({ id });
+    return this.userRepository.findOneBy({ id });
   }
 
-  conectadoAoBoard(boardId: number, id: number) {
-    return this.RepositorioUsuario.findOneBy({
-      id, boards: {
-        id: boardId
-      }
+  async isConnectedToBoard(id: number, boardId: number) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id,
+        boards: {
+          id: boardId,
+        },
+      },
+      relations: ['boards'],
     });
+
+    if (!user) {
+      throw new UnauthorizedException('Você não faz parte desse board.');
+    }
+
+    return true;
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return this.RepositorioUsuario.update(id, {
-      PrimeiroNome: updateUsuarioDto.PrimeiroNome,
-      UltimoNome: updateUsuarioDto.UltimoNome,
+  // async isConnectedToSwimlane(id: number, swimlaneId: number) {
+  //   const user = await this.userRepository.findOne({
+  //     where: {
+  //       id,
+  //       boards: {
+  //         swimlanes: {
+  //           id: swimlaneId,
+  //         },
+  //       },
+  //     },
+  //     relations: ['boards', 'boards.swimlanes'],
+  //   });
+
+  //   if (!user) {
+  //     throw new UnauthorizedException('You are not a part of this board.');
+  //   }
+
+  //   return true;
+  // }
+
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return this.userRepository.update(id, {
+      nome: updateUserDto.nome,
+      sobrenome: updateUserDto.sobrenome,
     });
   }
 
   remove(id: number) {
-    return this.RepositorioUsuario.delete(id);
+    return this.userRepository.delete(id);
   }
 }

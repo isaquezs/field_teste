@@ -1,3 +1,3 @@
-export class CriarBoardDto {
-    Nome: string;
+export class CreateBoardDto {
+  nome: string;
 }

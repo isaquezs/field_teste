@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CriarSwimlaneDto } from './create-swimlane.dto';
+import { CreateSwimlaneDto } from './create-swimlane.dto';
 
-export class UpdateSwimlaneDto extends PartialType(CriarSwimlaneDto) {}
+export class UpdateSwimlaneDto extends PartialType(CreateSwimlaneDto) {}

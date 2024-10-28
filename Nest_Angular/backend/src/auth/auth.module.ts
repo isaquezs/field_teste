@@ -16,6 +16,7 @@ import { UserModule } from 'src/user/user.module';
       global: true,
       secret: 'secretKey',
       signOptions: { expiresIn: '3h' },
-    })],
+    }),
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}

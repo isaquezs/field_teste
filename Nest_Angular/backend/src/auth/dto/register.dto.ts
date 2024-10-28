@@ -1,6 +1,6 @@
-export class RegistrarDto {
-    email: string;
-    senha: string;
-    primeiroNome: string;
-    ultimoNome: string;
+export class RegisterDto {
+  email: string;
+  senha: string;
+  nome: string;
+  sobrenome: string;
 }

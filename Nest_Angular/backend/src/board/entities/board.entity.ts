@@ -1,19 +1,26 @@
 import { Swimlane } from 'src/swimlane/entities/swimlane.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Board {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({length: 100})
-    Nome: string;
+  @Column({ length: 100 })
+  nome: string;
 
-    @ManyToMany(() => User, (user) => user.boards)
-    users: User[];
+  @ManyToMany(() => User, (user) => user.boards, {
+    onDelete: 'CASCADE',
+  })
+  users: User[];
 
-    @OneToMany(() => Swimlane, (board) => board.board)
-    swimlanes: Swimlane[];
+  @OneToMany(() => Swimlane, (board) => board.board)
+  swimlanes: Swimlane[];
 }

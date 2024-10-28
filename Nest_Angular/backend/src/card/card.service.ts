@@ -1,55 +1,79 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CriarCardDto } from './dto/create-card.dto';
+import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from './entities/card.entity';
 import { Repository } from 'typeorm';
 import { SwimlaneService } from 'src/swimlane/swimlane.service';
+import { UserService } from 'src/user/user.service';
+import { ReorderedCardDto } from './dto/reorder-cards.dto';
 
 @Injectable()
 export class CardService {
   constructor(
     @InjectRepository(Card)
-    private RepositorioCard: Repository<Card>,
+    private cardRepository: Repository<Card>,
     private swimlaneService: SwimlaneService,
-  ) { }
+    private userService: UserService,
+  ) {}
 
-  async create(criarCardDto: CriarCardDto, userId: number) {
+  async create(createCardDto: CreateCardDto, userId: number) {
     const card = new Card();
-    card.Nome = criarCardDto.Nome;
-    card.conteudo = criarCardDto.conteudo;
-    card.swimlaneId = criarCardDto.swimlaneId;
-    const temAcessoAoSwimlane = await this.swimlaneService.temAcessoAoSwimlane(
-      criarCardDto.swimlaneId,
+    card.nome = createCardDto.nome;
+    card.content = createCardDto.conteudo;
+    card.swimlaneId = createCardDto.swimlaneId;
+    card.order = createCardDto.ordem;
+    const hasAccessToSwimlane = await this.swimlaneService.hasAccessToSwimlane(
+      createCardDto.swimlaneId,
       userId,
-    )
-    if (!temAcessoAoSwimlane) {
-      throw new UnauthorizedException('Você não tem acesso a esse swimlane.');
+    );
+    if (!hasAccessToSwimlane) {
+      throw new UnauthorizedException('You are not a part of this board.');
     }
-    return this.RepositorioCard.save(card);
+    return this.cardRepository.save(card);
   }
 
-  update(id: number, userId: number, updateCardDto: UpdateCardDto) {
-    return this.RepositorioCard.update(
-      {
-        id,
-        swimlane: {
-          board: {
-            users: { id: userId },
-          }
-        },
-      }, {
-      Nome: updateCardDto.Nome,
-      conteudo: updateCardDto.conteudo,
+  // async updateCardOrdersAndSwimlanes(
+  //   reorder: ReorderedCardDto,
+  //   userId: number,
+  // ) {
+  //   await this.userService.isConnectedToBoard(userId, reorder.boardId);
+
+  //   const promises = reorder.cards.map((card) =>
+  //     this.cardRepository.update(card.id, {
+  //       order: card.order,
+  //       swimlaneId: card.swimlaneId,
+  //     }),
+  //   );
+
+  //   await Promise.all(promises);
+
+  //   return true;
+  // }
+
+  async update(id: number, userId: number, updateCardDto: UpdateCardDto) {
+    await this.userService.isConnectedToSwimlane(
+      userId,
+      updateCardDto.swimlaneId,
+    );
+    return this.cardRepository.update(id, {
+      nome: updateCardDto.nome,
+      content: updateCardDto.conteudo,
     });
   }
 
-  remove(id: number, userId: number) {
-    return this.RepositorioCard.delete({
+  async remove(id: number, userId: number) {
+    // const card = await this.cardRepository.findOneBy({ id });
+    // await this.userService.isConnectedToSwimlane(userId, card.swimlaneId);
+    // return this.cardRepository.delete(id);
+
+    return this.cardRepository.delete({
       id,
       swimlane: {
         board: {
-          users: { id: userId },
+          users: {
+            id: userId,
+          }
         }
       }
     });

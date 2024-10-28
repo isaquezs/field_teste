@@ -1,40 +1,47 @@
-import { BeforeInsert, Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({length: 100})
-    PrimeiroNome: string;
+  @Column({ length: 100 })
+  nome: string;
 
-    @Column({length: 100})
-    UltimoNome: string;
-    
-    @Column({length: 100})
-    Email: string;
+  @Column({ length: 100 })
+  sobrenome: string;
 
-    @Column({length: 200})
-    senha: string;
+  @Column({ length: 100 })
+  email: string;
 
-    @Column({default: false})
-    EmailVeriicado: boolean;
+  @Column({ length: 200 })
+  senha: string;
 
-    @ManyToMany(() => Board, (board) => board.users)
-    @JoinTable()
-    boards: Board[];
+  @Column({ default: false })
+  emailVerificado: boolean;
 
-    @OneToMany(() => Card, (user) => user.responsavel)
-    cards: Card[];
+  @ManyToMany(() => Board, (board) => board.users)
+  @JoinTable()
+  boards: Board[];
 
-    @BeforeInsert()
-    async hashSenha() {
-        // Se a senha está setada, então criptografa ela
-        if(this.senha) {
-            this.senha = await bcrypt.hash(this.senha, 10);
-        }
+  @OneToMany(() => Card, (user) => user.assigne)
+  cards: Card[];
+
+  @BeforeInsert()
+  async hashPassword() {
+    if (this.senha) {
+      this.senha = await bcrypt.hash(this.senha, 10);
     }
+  }
 }

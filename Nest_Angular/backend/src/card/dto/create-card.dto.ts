@@ -1,6 +1,6 @@
-export class CriarCardDto {
-    Nome: string
-    conteudo: string;
-    ordem: number;
-    swimlaneId: number;
+export class CreateCardDto {
+  nome: string;
+  conteudo: string;
+  ordem: number;
+  swimlaneId: number;
 }

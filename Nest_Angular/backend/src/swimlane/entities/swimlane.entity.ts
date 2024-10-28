@@ -1,27 +1,32 @@
 import { Board } from 'src/board/entities/board.entity';
 import { Card } from 'src/card/entities/card.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Swimlane {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({length: 100})
-    Nome: string;
+  @Column({ length: 100 })
+  nome: string;
 
-    @Column()
-    ordem: number;
-    
-    @Column()
-    boardId: number;
+  @Column()
+  ordem: number;
 
-    @ManyToOne(() => Board, (board) => board.swimlanes)
-    @JoinColumn()
-    board: Board;
+  @Column()
+  boardId: number;
 
-    @OneToMany(() => Card, (card) => card.swimlane)
-    cards: Card[];
+  @ManyToOne(() => Board, (board) => board.swimlanes)
+  @JoinColumn()
+  board: Board;
 
+  @OneToMany(() => Card, (card) => card.swimlane)
+  cards: Card[];
 }

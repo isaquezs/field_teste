@@ -14,17 +14,23 @@ import { AuthModule } from './auth/auth.module';
 import { AuthGuard } from './auth/auth/auth.guard';
 
 @Module({
-  imports: [UserModule, BoardModule, SwimlaneModule, CardModule, TypeOrmModule.forRoot({
-    type: 'mysql',
-    host: 'localhost',
-    port: 3306,
-    username: 'root',
-    password: '',
-    database: 'kanban',
-    entities: [Board, Card, Swimlane, User],
-    synchronize: process.env.ENV !== 'production',
-  }), AuthModule
-],
+  imports: [
+    UserModule,
+    BoardModule,
+    SwimlaneModule,
+    CardModule,
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
+      username: 'root',
+      password: '',
+      database: 'kanban',
+      entities: [Board, Card, Swimlane, User],
+      synchronize: process.env.ENV !== 'production',
+    }),
+    AuthModule,
+  ],
   controllers: [AppController],
   providers: [AppService, AuthGuard],
 })

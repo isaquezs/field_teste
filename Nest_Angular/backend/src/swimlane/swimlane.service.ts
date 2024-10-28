@@ -1,75 +1,78 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CriarSwimlaneDto } from './dto/create-swimlane.dto';
+import { Injectable } from '@nestjs/common';
+import { CreateSwimlaneDto } from './dto/create-swimlane.dto';
 import { UpdateSwimlaneDto } from './dto/update-swimlane.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Swimlane } from './entities/swimlane.entity';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
+// import { ReordereSwimlaneDto } from './dto/reorder-swimlane.dto';
 
 @Injectable()
 export class SwimlaneService {
   constructor(
     @InjectRepository(Swimlane)
-    private RepositorioSwimlane: Repository<Swimlane>,
-    private UserService: UserService,
-  ) { }
+    private swimlaneRepository: Repository<Swimlane>,
+    private userService: UserService,
+  ) {}
 
-  async create(criarSwimlaneDto: CriarSwimlaneDto, userId: number) {
-    // gera o swimlane que vai ser automaticamente conectado ao board especificado pelo boardId
+  async create(createSwimlaneDto: CreateSwimlaneDto, userId: number) {
     const swimlane = new Swimlane();
-    swimlane.Nome = criarSwimlaneDto.nome;
-    swimlane.ordem = criarSwimlaneDto.ordem;
-    swimlane.boardId = criarSwimlaneDto.boardId;
+    swimlane.nome = createSwimlaneDto.nome;
+    swimlane.ordem = createSwimlaneDto.ordem;
+    swimlane.boardId = createSwimlaneDto.boardId;
 
-    const conectado = await this.UserService.conectadoAoBoard(
-      userId,
-      swimlane.boardId
-    );
-
-    if (!conectado) {
-      throw new UnauthorizedException('Você não está conectado a esse board.');
-    }
-
-    return this.RepositorioSwimlane.save(swimlane);
+    await this.userService.isConnectedToBoard(userId, swimlane.boardId);
+    return this.swimlaneRepository.save(swimlane);
   }
 
-  async temAcessoAoSwimlane(swimlaneId: number, userId: number) {
-    const temAcesso = await this.RepositorioSwimlane.count({
+  // async updateSwimlaneOrders(reorder: ReordereSwimlaneDto, userId: number) {
+  //   await this.userService.isConnectedToBoard(userId, reorder.boardId);
+
+  //   const promises = reorder.items.map((swimlane) =>
+  //     this.swimlaneRepository.update(swimlane.id, { order: swimlane.order }),
+  //   );
+
+  //   await Promise.all(promises);
+
+  //   return true;
+  // }
+
+  async hasAccessToSwimlane(swimlaneId: number, userId: number) {
+    const hasAccess = await this.swimlaneRepository.count({
       where: {
         id: swimlaneId,
-        board: { users: { id: userId } }
-      }
+        board: { users: { id: userId } },
+      },
     });
-      return temAcesso > 0;
+
+    return hasAccess > 0;
   }
 
   findAllByBoardId(boardId: number, userId: number) {
-    return this.RepositorioSwimlane.find({
+    return this.swimlaneRepository.find({
       where: {
         boardId,
-        board: { users: { id: userId } }
+        board: { users: { id: userId } },
       },
     });
   }
 
-  update(id: number, userId: number, updateSwimlaneDto: UpdateSwimlaneDto) {
-    return this.RepositorioSwimlane.update({
-      id,
-      board: {
-        users: { id: userId }
-      }
-    }, {
-      Nome: updateSwimlaneDto.nome,
-      ordem: updateSwimlaneDto.ordem,
-    })
+  async update(
+    id: number,
+    userId: number,
+    updateSwimlaneDto: UpdateSwimlaneDto,
+  ) {
+    await this.userService.isConnectedToBoard(
+      userId,
+      updateSwimlaneDto.boardId,
+    );
+    return this.swimlaneRepository.update(id, {
+      nome: updateSwimlaneDto.nome,
+    });
   }
 
-  remove(id: number, userId: number) {
-    return this.RepositorioSwimlane.delete({
-      id,
-      board: {
-        users: { id: userId }
-      }
-    });
+  async remove(id: number, userId: number) {
+    await this.userService.isConnectedToSwimlane(userId, id);
+    return this.swimlaneRepository.delete(id);
   }
 }
