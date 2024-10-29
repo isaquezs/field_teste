@@ -1,30 +1,37 @@
-import { IUser } from "./user.model";
+import { IUser } from './user.model';
 
 export interface IBoard {
-    id: number;
+  id: number;
+  nome: string;
+  users?: IUser[];
+  swimlanes?: ISwimlane[];
+}
+
+export interface ICreateSwimlane{
     nome: string;
-    users?: IUser[];
-    swimlanes?: IUser[];
+    ordem: number;
+    boardId: number;
 }
 
 export interface ICreateBoard {
     nome: string;
 }
 
-export interface ISwimlanes {
+export interface ISwimlane {
+    id: number;
     nome: string;
     ordem: number;
     boardId: number;
     board: IBoard;
     cards?: ICard[];
-}
+  }
 
-export interface ICard {
+  export interface ICard {
     id: number;
     nome: string;
     conteudo: string;
     ordem: number;
     responsavel?: IUser;
     swimlaneId: number;
-    swimlane: ISwimlanes;
-}
+    swimlane: ISwimlane;
+  }

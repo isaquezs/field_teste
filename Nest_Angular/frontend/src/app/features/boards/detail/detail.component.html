@@ -1,1 +1,35 @@
-<h1>My detail page</h1>
+<a>
+    <button [routerLink]="['/boards']" routerLinkActive="router-link-active" type="button" mat-flat-button
+        color="secondary">Voltar para os quadros</button>
+</a>
+
+<h1>{{ board()?.nome }}</h1>
+
+<!-- Listas deve vir dos swimlanes para o board-->
+<div class="swimlanes-wrapper">
+    @for(swimlane of board()?.swimlanes; track swimlane){
+    <div class="swimlane">
+        <div cdkDropList>
+            <h2>{{swimlane.nome}}</h2>
+            <div cdkDropList>
+                @for(card of swimlane.cards; track card){
+                <div cdkDropList> {{ card.nome }}</div>
+                }
+                <button mat-button>Adicionar Card</button>
+            </div>
+        </div>
+    </div>
+    }
+    <div class="swimlane">
+        <form [formGroup]="swimlaneForm">
+            <mat-form-field class="example-full-width">
+                <mat-label>Nome do Card</mat-label>
+                <input matInput formControlName="nome" placeholder="Ex. Meu Card" />
+                @if (!swimlaneForm.controls.nome.hasError('required')) {
+                <mat-error>Nome não é válido</mat-error>
+                }
+            </mat-form-field><br />
+        </form>
+        <button (click)="addSwimlane()" mat-flat-button color="primary">Adicionar Seção</button>
+    </div>
+</div>

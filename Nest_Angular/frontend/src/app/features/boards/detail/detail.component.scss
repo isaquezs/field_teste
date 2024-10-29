@@ -1,0 +1,30 @@
+:host {
+    display: block;
+    margin: 40px;
+
+    h1 {
+        margin-top: 20px;
+    }
+
+    .swimlanes-wrapper {
+        overflow: auto;
+        padding: 0 16px 20px;
+        display: flex;
+        margin: 0 -16px;
+        flex-wrap: nowrap;
+        gap: 16px;
+         
+        .swimlane {
+            background-color: white;
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+            padding: 16px 16px 24px;
+            border-radius: 4px;
+            width: 240px;
+            flex-shrink: 0;
+
+            mat-form-field, input, button {
+                width: 100%;
+            }
+        }
+    }
+}

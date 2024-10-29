@@ -22,7 +22,8 @@ export class ListComponent {
   private readonly boardService = inject(BoardService);
   refetch$ = new Subject<void>();
   boards = toSignal(
-    this.refetch$.asObservable()
+    this.refetch$
+    .asObservable()
     .pipe(switchMap(() => this.boardService.getBoards()))
   );
 
