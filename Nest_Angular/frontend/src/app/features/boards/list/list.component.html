@@ -2,17 +2,17 @@
 <!-- Boards -->
 <div class="board-wrapper">
     @for (board of boards(); track board){
-    <div class="board">
+    <a class="board" [routerLink]="['/boards', board.id]">
         <mat-card>
             <mat-card-header>
                 <mat-card-title>{{board.nome}}</mat-card-title>
             </mat-card-header>
-            <mat-card-actions >
+            <mat-card-actions>
                 <button (click)="openNewBoardFlow(board)" type="button" mat-button>Editar</button>
-                <button type="button" mat-button>Deletar</button>
+                <button (click)="deleteBoard(board)" type="button" mat-button>Deletar</button>
             </mat-card-actions>
         </mat-card>
-    </div>
+    </a>
     }
 </div>
 

@@ -16,7 +16,13 @@ export class BoardService {
   updateBoard(id: number,createBoard: ICreateBoard): Observable<IBoard> {
     return this.http.patch<IBoard>(`/api/board/${id}`, createBoard);    
   }
+
+  deleteBoard(boardId: number): Observable<void> {
+    return this.http.delete<void>(`/api/board/${boardId}`);    
+  }
+
   getBoards(): Observable<IBoard[]> {
     return this.http.get<IBoard[]>('/api/board');
   }
+
 }

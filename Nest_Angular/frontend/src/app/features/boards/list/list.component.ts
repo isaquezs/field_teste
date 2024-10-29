@@ -42,5 +42,12 @@ export class ListComponent {
       board && this.refetch$.next();
     });
   }
+
+  deleteBoard(board: IBoard) {
+    this.boardService.deleteBoard(board.id)
+    .subscribe(() => {
+      this.refetch$.next();
+    });
+  }
 }
 

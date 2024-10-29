@@ -58,7 +58,7 @@ export class BoardService {
   }
 
   async remove(id: number, userId: number) {
-    // await this.isUserAssociatedWithBoard(id, userId);
+    await this.isUserAssociatedWithBoard(id, userId);
     return this.boardRepository.delete(id);
   }
 }
