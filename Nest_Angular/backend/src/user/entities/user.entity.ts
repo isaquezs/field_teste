@@ -35,7 +35,7 @@ export class User {
   @JoinTable()
   boards: Board[];
 
-  @OneToMany(() => Card, (user) => user.assigne)
+  @OneToMany(() => Card, (user) => user.responsavel)
   cards: Card[];
 
   @BeforeInsert()

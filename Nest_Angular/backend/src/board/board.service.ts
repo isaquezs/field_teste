@@ -14,16 +14,16 @@ export class BoardService {
     private userService: UserService,
   ) {}
 
-  // async isUserAssociatedWithBoard(boardId: number, userId: number) {
-  //   const count = await this.boardRepository.count({
-  //     where: { id: boardId, users: { id: userId } },
-  //   });
-  //   if (count === 0) {
-  //     throw new UnauthorizedException('Usuário não associado ao board');
-  //   }
+  async isUserAssociatedWithBoard(boardId: number, userId: number) {
+    const count = await this.boardRepository.count({
+      where: { id: boardId, users: { id: userId } },
+    });
+    if (count === 0) {
+      throw new UnauthorizedException('Usuário não associado ao board');
+    }
 
-  //   return true;
-  // }
+    return true;
+  }
 
   async create(createBoardDto: CreateBoardDto, userId: number) {
     const board = new Board();
@@ -51,7 +51,7 @@ export class BoardService {
   }
 
   async update(id: number, userId: number, updateBoardDto: UpdateBoardDto) {
-    // await this.isUserAssociatedWithBoard(id, userId);
+    await this.isUserAssociatedWithBoard(id, userId);
     return this.boardRepository.update(id, {
       nome: updateBoardDto.nome,
     });

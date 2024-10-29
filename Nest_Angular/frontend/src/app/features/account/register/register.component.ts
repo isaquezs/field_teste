@@ -37,7 +37,7 @@ export class RegisterComponent {
     console.log("Iniciando registro...");
     this.userService.register(this.registerForm.value as IRegister)
       .subscribe((token: ILoginRespose) => {
-        this.authService.token = token.authToken;
+        this.authService.token = token.accessToken;
         this.router.navigateByUrl('/boards');
       });
   }

@@ -2,11 +2,7 @@
     <h1>Registrar</h1>
     <mat-form-field class="example-full-width">
         <mat-label>Email</mat-label>
-        <input 
-        type="email" 
-        matInput formControlName="email" 
-        placeholder="Ex. pat@example.com" 
-        />
+        <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com" />
         @if (registerForm.controls.email.hasError('email') &&
         !registerForm.controls.email.hasError('required')) {
         <mat-error>Email não é válido</mat-error>
@@ -44,5 +40,5 @@
         <button type="button" tabindex="-1" mat-flat-button color="secondary">Já tem uma conta? Entre aqui.</button>
 
     </a>
-    
+
 </form>

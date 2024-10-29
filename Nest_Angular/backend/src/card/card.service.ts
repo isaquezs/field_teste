@@ -20,9 +20,9 @@ export class CardService {
   async create(createCardDto: CreateCardDto, userId: number) {
     const card = new Card();
     card.nome = createCardDto.nome;
-    card.content = createCardDto.conteudo;
+    card.conteudo = createCardDto.conteudo;
     card.swimlaneId = createCardDto.swimlaneId;
-    card.order = createCardDto.ordem;
+    card.ordem = createCardDto.ordem;
     const hasAccessToSwimlane = await this.swimlaneService.hasAccessToSwimlane(
       createCardDto.swimlaneId,
       userId,
@@ -58,7 +58,7 @@ export class CardService {
     // );
     return this.cardRepository.update(id, {
       nome: updateCardDto.nome,
-      content: updateCardDto.conteudo,
+      conteudo: updateCardDto.conteudo,
     });
   }
 

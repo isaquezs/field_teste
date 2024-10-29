@@ -9,5 +9,12 @@ export interface IRegister extends ILogin {
 }
 
 export interface ILoginRespose {
-    authToken: string;
+    accessToken: string;
+}
+
+export interface IUser {
+    id: number;
+    email: string;
+    nome: string;
+    sobrenome: string;
 }

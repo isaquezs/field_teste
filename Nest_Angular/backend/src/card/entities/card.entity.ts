@@ -17,17 +17,17 @@ export class Card {
   nome: string;
 
   @Column()
-  content: string;
+  conteudo: string;
 
   @Column()
-  order: number;
+  ordem: number;
 
   @Column({ nullable: true })
   responsavelId: number;
 
   @ManyToOne(() => User, (user) => user.cards)
   @JoinColumn()
-  assigne: User;
+  responsavel: User;
 
   @Column()
   swimlaneId: number;
