@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Put} from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
@@ -28,9 +28,6 @@ export class BoardController {
   async findOne(@Param('id') id: string, @Request() req: PayloadRequest) {
     const board = await this.boardService.findOne(+id, req.user.id);
     board.swimlanes = board.swimlanes.sort((a, b) => a.ordem - b.ordem);
-    board.swimlanes.forEach((swimlane) => {
-      swimlane.cards = swimlane.cards.sort((a, b) => a.ordem - b.ordem);
-    });
     return board;
   }
 

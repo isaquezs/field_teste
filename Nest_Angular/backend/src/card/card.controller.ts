@@ -13,7 +13,6 @@ import { CardService } from './card.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
 import { AuthGuard, PayloadRequest } from 'src/auth/auth/auth.guard';
-import { ReorderedCardDto } from './dto/reorder-cards.dto';
 
 @Controller('card')
 export class CardController {
@@ -24,18 +23,6 @@ export class CardController {
   create(@Body() createCardDto: CreateCardDto, @Request() req: PayloadRequest) {
     return this.cardService.create(createCardDto, req.user.id);
   }
-
-  // @Put('update-order')
-  // @UseGuards(AuthGuard)
-  // updateOrder(
-  //   @Body() reorderCards: ReorderedCardDto,
-  //   @Request() req: PayloadRequest,
-  // ) {
-  //   return this.cardService.updateCardOrdersAndSwimlanes(
-  //     reorderCards,
-  //     req.user.id,
-  //   );
-  // }
 
   @Patch(':id')
   @UseGuards(AuthGuard)

@@ -5,8 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Card } from './entities/card.entity';
 import { Repository } from 'typeorm';
 import { SwimlaneService } from 'src/swimlane/swimlane.service';
-import { UserService } from 'src/user/user.service';
-import { ReorderedCardDto } from './dto/reorder-cards.dto';
 
 @Injectable()
 export class CardService {
@@ -14,7 +12,6 @@ export class CardService {
     @InjectRepository(Card)
     private cardRepository: Repository<Card>,
     private swimlaneService: SwimlaneService,
-    private userService: UserService,
   ) {}
 
   async create(createCardDto: CreateCardDto, userId: number) {
@@ -33,29 +30,7 @@ export class CardService {
     return this.cardRepository.save(card);
   }
 
-  // async updateCardOrdersAndSwimlanes(
-  //   reorder: ReorderedCardDto,
-  //   userId: number,
-  // ) {
-  //   await this.userService.isConnectedToBoard(userId, reorder.boardId);
-
-  //   const promises = reorder.cards.map((card) =>
-  //     this.cardRepository.update(card.id, {
-  //       order: card.order,
-  //       swimlaneId: card.swimlaneId,
-  //     }),
-  //   );
-
-  //   await Promise.all(promises);
-
-  //   return true;
-  // }
-
   async update(id: number, userId: number, updateCardDto: UpdateCardDto) {
-    // await this.userService.isConnectedToSwimlane(
-    //   userId,
-    //   updateCardDto.swimlaneId,
-    // );
     return this.cardRepository.update(id, {
       nome: updateCardDto.nome,
       conteudo: updateCardDto.conteudo,
@@ -63,10 +38,6 @@ export class CardService {
   }
 
   async remove(id: number, userId: number) {
-    // const card = await this.cardRepository.findOneBy({ id });
-    // await this.userService.isConnectedToSwimlane(userId, card.swimlaneId);
-    // return this.cardRepository.delete(id);
-
     return this.cardRepository.delete({
       id,
       swimlane: {

@@ -9,8 +9,9 @@ export interface ReordereSwimlaneDto {
 }
 export interface ReordereSwimlaneItemDto {
   id: number;
-  order: number;
+  ordem: number;
 }
+
 
 @Injectable({
   providedIn: 'root',
@@ -21,9 +22,11 @@ export class BoardService {
   createBoard(createBoard: ICreateBoard): Observable<IBoard> {
     return this.http.post<IBoard>('/api/board', createBoard);
   }
+
   updateSwimlaneOrder(reorder: ReordereSwimlaneDto): Observable<void> {
     return this.http.put<void>('/api/swimlane/update-order', reorder);
   }
+
   updateBoard(id: number, createBoard: ICreateBoard): Observable<IBoard> {
     return this.http.patch<IBoard>(`/api/board/${id}`, createBoard);
   }

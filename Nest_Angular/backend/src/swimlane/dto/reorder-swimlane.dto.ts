@@ -1,8 +1,9 @@
-// export class ReordereSwimlaneDto {
-//   boardId: number;
-//   items: ReordereSwimlaneItemDto[];
-// }
-// export class ReordereSwimlaneItemDto {
-//   id: number;
-//   order: number;
-// }
+export class ReorderedSwimlaneDto {
+    boardId: number;
+    items: ReorderedSwimlaneItemDto[];
+}
+
+export class ReorderedSwimlaneItemDto {
+    id: number;
+    ordem: number;
+}

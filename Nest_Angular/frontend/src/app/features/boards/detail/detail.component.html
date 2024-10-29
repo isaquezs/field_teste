@@ -6,20 +6,25 @@
 <h1>{{ board()?.nome }}</h1>
 
 <!-- Listas deve vir dos swimlanes para o board-->
-<div class="swimlanes-wrapper">
+<div 
+cdkDropList 
+cdkDropListOrientation="horizontal" 
+(cdkDropListDropped)="aoMudarSwimlane($event)" 
+class="swimlanes-wrapper"
+>
     @for(swimlane of board()?.swimlanes; track swimlane){
-    <div class="swimlane">
+    <div class="swimlane" cdkDrag>
         <div class="swimlane-header">
             <h2>{{swimlane.nome}}</h2>
             <button (click)="deleteSwimlane(swimlane)" mat-button>Deletar</button>
         </div>
         <div class="swimlane-inner">
-            <div cdkDropList>
-                <div cdkDropList>
+            <div>
+                <div>
                     @for(card of swimlane.cards; track card){
-                    <div cdkDrag> {{ card.nome }}</div>
+                    <div class="swimlane__card"> {{ card.nome }}</div>
                     }
-                    <button mat-button>Adicionar Card</button>
+                    <button (click)="adicionarCard(swimlane)" mat-button>Adicionar Card</button>
                 </div>
             </div>
         </div>

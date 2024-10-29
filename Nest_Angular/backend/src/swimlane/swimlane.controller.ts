@@ -14,7 +14,7 @@ import { SwimlaneService } from './swimlane.service';
 import { CreateSwimlaneDto } from './dto/create-swimlane.dto';
 import { UpdateSwimlaneDto } from './dto/update-swimlane.dto';
 import { AuthGuard, PayloadRequest } from 'src/auth/auth/auth.guard';
-// import { ReordereSwimlaneDto } from './dto/reorder-swimlane.dto';
+import { ReorderedSwimlaneDto } from './dto/reorder-swimlane.dto';
 
 @Controller('swimlane')
 export class SwimlaneController {
@@ -28,18 +28,18 @@ export class SwimlaneController {
   ) {
     return this.swimlaneService.create(createSwimlaneDto, req.user.id);
   }
-
-  // @Put('update-order')
-  // @UseGuards(AuthGuard)
-  // updateOrder(
-  //   @Request() req: PayloadRequest,
-  //   @Body() reorderedSwimlanes: ReordereSwimlaneDto,
-  // ) {
-  //   return this.swimlaneService.updateSwimlaneOrders(
-  //     reorderedSwimlanes,
-  //     req.user.id,
-  //   );
-  // }
+  
+  @Put('update-order')
+  @UseGuards(AuthGuard)
+  updateOrder(
+    @Request() req: PayloadRequest,
+    @Body() reorderedSwimlaneDto: ReorderedSwimlaneDto,
+  ) {
+    return this.swimlaneService.updateSwimlaneOrders(
+      reorderedSwimlaneDto, 
+      req.user.id
+    );
+  }
 
   @Get('/board/:boardId')
   @UseGuards(AuthGuard)

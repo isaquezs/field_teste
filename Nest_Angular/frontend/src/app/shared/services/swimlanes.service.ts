@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { IBoard, ICreateSwimlane, ISwimlane } from '../models/board.model';
 import { Observable } from 'rxjs';
-import { ReordereSwimlaneDto } from './board.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +11,6 @@ export class SwimlanesService {
 
   createSwimlane(createSwimlane: ICreateSwimlane): Observable<ISwimlane> {
     return this.http.post<ISwimlane>('/api/swimlane', createSwimlane);
-  }
-  updateSwimlaneOrder(reorder: ReordereSwimlaneDto): Observable<void> {
-    return this.http.put<void>('/api/swimlane/update-order', reorder);
   }
   updateBoard(id: number, createBoard: ICreateSwimlane): Observable<IBoard> {
     return this.http.patch<IBoard>(`/api/board/${id}`, createBoard);

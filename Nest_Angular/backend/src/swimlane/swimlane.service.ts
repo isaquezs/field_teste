@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Swimlane } from './entities/swimlane.entity';
 import { Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
+import { ReorderedSwimlaneDto } from './dto/reorder-swimlane.dto';
 // import { ReordereSwimlaneDto } from './dto/reorder-swimlane.dto';
 
 @Injectable()
@@ -24,18 +25,21 @@ export class SwimlaneService {
     await this.userService.isConnectedToBoard(userId, swimlane.boardId);
     return this.swimlaneRepository.save(swimlane);
   }
+  
+  async updateSwimlaneOrders(
+    reorder: ReorderedSwimlaneDto, 
+    userId: number
+  ) {
+    await this.userService.isConnectedToBoard(userId, reorder.boardId);
 
-  // async updateSwimlaneOrders(reorder: ReordereSwimlaneDto, userId: number) {
-  //   await this.userService.isConnectedToBoard(userId, reorder.boardId);
+    const promises = reorder.items.map((swimlane) =>
+    this.swimlaneRepository.update(swimlane.id, {ordem : swimlane.ordem})
+  )
 
-  //   const promises = reorder.items.map((swimlane) =>
-  //     this.swimlaneRepository.update(swimlane.id, { order: swimlane.order }),
-  //   );
+  await Promise.all(promises);
 
-  //   await Promise.all(promises);
-
-  //   return true;
-  // }
+    return true;
+  }
 
   async hasAccessToSwimlane(swimlaneId: number, userId: number) {
     const hasAccess = await this.swimlaneRepository.count({
