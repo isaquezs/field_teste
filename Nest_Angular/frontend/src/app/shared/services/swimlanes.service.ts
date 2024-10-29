@@ -19,8 +19,8 @@ export class SwimlanesService {
   updateBoard(id: number, createBoard: ICreateSwimlane): Observable<IBoard> {
     return this.http.patch<IBoard>(`/api/board/${id}`, createBoard);
   }
-  deleteBoard(boardId: number): Observable<void> {
-    return this.http.delete<void>(`/api/swimlane/${boardId}`);
+  deleteSwimlane(swimlaneId: number): Observable<void> {
+    return this.http.delete<void>(`/api/swimlane/${swimlaneId}`);
   }
   getBoardById(id: number): Observable<IBoard> {
     return this.http.get<IBoard>(`/api/swimlane/${id}`);

@@ -8,6 +8,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { MatInputModule } from '@angular/material/input';
 import { SwimlanesService } from '../../../shared/services/swimlanes.service';
 import { Subject, switchMap } from 'rxjs';
+import { ISwimlane } from '../../../shared/models/board.model';
 
 @Component({
   selector: 'app-detail',
@@ -38,6 +39,12 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     this.refetch$.next();
+  }
+
+  deleteSwimlane(swimlane: ISwimlane){
+    this.swimlaneService.deleteSwimlane(swimlane.id).subscribe(() => {
+      this.refetch$.next();
+    });
   }
 
   addSwimlane(){

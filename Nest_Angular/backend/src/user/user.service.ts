@@ -43,25 +43,25 @@ export class UserService {
     return true;
   }
 
-  // async isConnectedToSwimlane(id: number, swimlaneId: number) {
-  //   const user = await this.userRepository.findOne({
-  //     where: {
-  //       id,
-  //       boards: {
-  //         swimlanes: {
-  //           id: swimlaneId,
-  //         },
-  //       },
-  //     },
-  //     relations: ['boards', 'boards.swimlanes'],
-  //   });
+  async isConnectedToSwimlane(id: number, swimlaneId: number) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id,
+        boards: {
+          swimlanes: {
+            id: swimlaneId,
+          },
+        },
+      },
+      relations: ['boards', 'boards.swimlanes'],
+    });
 
-  //   if (!user) {
-  //     throw new UnauthorizedException('You are not a part of this board.');
-  //   }
+    if (!user) {
+      throw new UnauthorizedException('You are not a part of this board.');
+    }
 
-  //   return true;
-  // }
+    return true;
+  }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.userRepository.update(id, {
