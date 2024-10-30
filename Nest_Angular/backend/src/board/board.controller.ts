@@ -27,7 +27,10 @@ export class BoardController {
   @UseGuards(AuthGuard)
   async findOne(@Param('id') id: string, @Request() req: PayloadRequest) {
     const board = await this.boardService.findOne(+id, req.user.id);
-    board.swimlanes = board.swimlanes.sort((a, b) => a.ordem - b.ordem);
+    board.swimlanes = board.swimlanes.sort((a, b) => a.ordem - b.ordem);  
+    board.swimlanes.forEach((swimlane) => {
+      swimlane.cards = swimlane.cards.sort((a, b) => a.ordem - b.ordem);
+    });
     return board;
   }
 

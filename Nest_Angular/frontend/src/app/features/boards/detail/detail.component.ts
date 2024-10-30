@@ -3,7 +3,7 @@ import { BoardService } from '../../../shared/services/board.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { SwimlanesService } from '../../../shared/services/swimlanes.service';
@@ -11,6 +11,7 @@ import { Subject, switchMap } from 'rxjs';
 import { ICard, ISwimlane } from '../../../shared/models/board.model';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddCardComponent } from '../components/add-card/add-card.component';
+import { CardService } from '../../../shared/services/card.service';
 
 @Component({
   selector: 'app-detail',
@@ -23,6 +24,7 @@ export class DetailComponent implements OnInit {
   private readonly boardService = inject(BoardService);
   private readonly matDialog = inject(MatDialog);
   private readonly swimlaneService = inject(SwimlanesService);
+  private readonly cardService = inject(CardService);
   private readonly activatedRoute = inject(ActivatedRoute);
   refetch$ = new Subject<void>();
   board = toSignal(
@@ -53,12 +55,43 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  aoMudarCard($event: CdkDragDrop<any>, swimlane: ISwimlane): void{
-    moveItemInArray(
-      swimlane.cards || [],
-      $event.previousIndex,
-      $event.currentIndex
-    );
+  aoMudarCard($event: CdkDragDrop<any>, swimlane: ISwimlane): void {
+    console.log($event, swimlane);
+    if ($event.previousContainer === $event.container) {
+      moveItemInArray(
+        swimlane.cards || [],
+        $event.previousIndex,
+        $event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        $event.previousContainer.data,
+        $event.container.data,
+        $event.previousIndex,
+        $event.currentIndex
+      )
+    }
+
+    const _board = this.board();
+    if (!_board) return;
+
+    const cards: ICard[] = _board.swimlanes?.reduce(
+      (prev: ICard[], current: ISwimlane) => {
+        const cards =
+          current.cards?.map((c, idx) => ({
+            ...c,
+            swimlaneId: current.id,
+            ordem: idx,
+          })) ||
+          [];
+
+        return [...prev, ...cards];
+      }, []) || [];
+
+    console.log(this.board())
+    this.cardService.updateCardOrderAndSwimlanes(_board.id, cards).subscribe(() => {
+      this.refetch$.next();
+    });
   }
 
   aoMudarSwimlane($event: CdkDragDrop<any>): void {
@@ -71,17 +104,17 @@ export class DetailComponent implements OnInit {
     );
 
     this.boardService
-    .updateSwimlaneOrder({
-      boardId: _board.id,
-      items: 
-      _board.swimlanes?.map((swimlane, index) => ({
-        id: swimlane.id,
-        ordem: index,
-      })) || [],
-    })
-    .subscribe(() => {
-      this.refetch$.next();
-    })
+      .updateSwimlaneOrder({
+        boardId: _board.id,
+        items:
+          _board.swimlanes?.map((swimlane, index) => ({
+            id: swimlane.id,
+            ordem: index,
+          })) || [],
+      })
+      .subscribe(() => {
+        this.refetch$.next();
+      });
     console.log(this.board()?.swimlanes)
   }
 

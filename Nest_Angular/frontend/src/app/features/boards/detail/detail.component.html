@@ -7,6 +7,7 @@
 
 <!-- Listas deve vir dos swimlanes para o board-->
 <div 
+cdkDropListGroup
 cdkDropList 
 cdkDropListOrientation="horizontal" 
 (cdkDropListDropped)="aoMudarSwimlane($event)" 
@@ -23,6 +24,7 @@ class="swimlanes-wrapper"
                 <div 
                  cdkDropList
                  cdkDropListOrientation="vertical" 
+                 [cdkDropListData]="swimlane.cards"
                  (cdkDropListDropped)="aoMudarCard($event, swimlane)" 
                 >
                  @for(card of swimlane.cards; track card){

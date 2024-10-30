@@ -9,6 +9,15 @@ import { ICard } from '../models/board.model';
 export class CardService {
   http = inject(HttpClient);
 
+  updateCardOrderAndSwimlanes(
+    boardId: number,
+    cards: ICard[]
+  ): Observable<ICard[]> {
+    return this.http.put<ICard[]>('/api/card/update-order', {
+      boardId,
+      cards
+    });
+  }
   createCard(createCard: Partial<ICard>): Observable<ICard> {
     return this.http.post<ICard>('/api/card', createCard);
   }
