@@ -1,9 +1,11 @@
-<a>
-    <button [routerLink]="['/boards']" routerLinkActive="router-link-active" type="button" mat-flat-button
-        color="secondary">Voltar para os quadros</button>
-</a>
+<div class="kb-board-header">
 
-<h1>{{ board()?.nome }}</h1>
+    <button mat-mini-fab [routerLink]="['/boards']" color="primary" aria-label="Voltar para os quadros">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+
+    <h1 class="kb-board-title">{{ board()?.nome }}</h1>
+</div>
 
 <!-- Listas deve vir dos swimlanes para o board-->
 <div cdkDropListGroup cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="aoMudarSwimlane($event)"
@@ -12,23 +14,18 @@
     <div class="swimlane" cdkDrag>
         <div class="swimlane-header" cdkDragHandle>
             <h2>{{swimlane.nome}}</h2>
-            <button (click)="deleteSwimlane(swimlane)" mat-button>Deletar</button>
+            <div>
+                <button color="primary" mat-stroked-button (click)="editSwimlane(swimlane)">
+                    Editar</button>
+            </div>
         </div>
         <div class="swimlane-inner">
-            <div 
-            class="swimlane-inner_dragzone"
-             cdkDropList 
-             cdkDropListOrientation="vertical" 
-             [cdkDropListData]="swimlane.cards"
-             (cdkDropListDropped)="aoMudarCard($event, swimlane)"
-            >
-              @for(card of swimlane.cards; track card){
-              <button class="swimlane__card" 
-              cdkDrag
-              (click)="adicionarOuEditarCard(swimlane, card)"
-              > {{ card.nome }}
-              </button>
-             }
+            <div class="swimlane-inner_dragzone" cdkDropList cdkDropListOrientation="vertical"
+                [cdkDropListData]="swimlane.cards" (cdkDropListDropped)="aoMudarCard($event, swimlane)">
+                @for(card of swimlane.cards; track card){
+                <button class="swimlane__card" cdkDrag (click)="adicionarOuEditarCard(swimlane, card)"> {{ card.nome }}
+                </button>
+                }
             </div>
         </div>
         <button (click)="adicionarOuEditarCard(swimlane)" mat-button>Adicionar Card</button>

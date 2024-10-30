@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { IBoard, ICreateSwimlane, ISwimlane } from '../models/board.model';
+import { IBoard, ICreateSwimlane, ISwimlane, IUpdateSwimlane } from '../models/board.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,8 +12,8 @@ export class SwimlanesService {
   createSwimlane(createSwimlane: ICreateSwimlane): Observable<ISwimlane> {
     return this.http.post<ISwimlane>('/api/swimlane', createSwimlane);
   }
-  updateBoard(id: number, createBoard: ICreateSwimlane): Observable<IBoard> {
-    return this.http.patch<IBoard>(`/api/board/${id}`, createBoard);
+  updateSwimlane(updateSwimlane: IUpdateSwimlane): Observable<ISwimlane> {
+    return this.http.patch<ISwimlane>(`/api/swimlane/${updateSwimlane.id}`, updateSwimlane);
   }
   deleteSwimlane(swimlaneId: number): Observable<void> {
     return this.http.delete<void>(`/api/swimlane/${swimlaneId}`);

@@ -7,13 +7,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddBoardComponent } from '../components/add-board/add-board.component';
 import { IBoard } from '../../../shared/models/board.model';
-import { Subject, switchMap } from 'rxjs';
+import { Subject, switchMap, filter } from 'rxjs';
+import { ConfirmComponent } from '../../../shared/ui/confirm/confirm.component';
 
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [RouterModule, MatCardModule, MatButtonModule, MatDialogModule],
+  imports: [RouterModule, MatCardModule, MatButtonModule, MatDialogModule, MatDialogModule],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
@@ -23,32 +24,43 @@ export class ListComponent {
   refetch$ = new Subject<void>();
   boards = toSignal(
     this.refetch$
-    .asObservable()
-    .pipe(switchMap(() => this.boardService.getBoards()))
+      .asObservable()
+      .pipe(switchMap(() => this.boardService.getBoards()))
   );
 
   ngOnInit() {
     this.refetch$.next();
   }
 
-  openNewBoardFlow(board?: IBoard) {
+  openNewBoardFlow($event: Event, board?: IBoard) {
+    $event.stopImmediatePropagation();
+    $event.preventDefault();
     this.dialog
-    .open(AddBoardComponent, {
-      width: '400px',
-      data: {
-        board,
-      },
-    }).afterClosed()
-    .subscribe((board: IBoard) => {
-      board && this.refetch$.next();
-    });
+      .open(AddBoardComponent, {
+        width: '400px',
+        data: {
+          board,
+        },
+      }).afterClosed()
+      .subscribe((board: IBoard) => {
+        board && this.refetch$.next();
+      });
   }
 
-  deleteBoard(board: IBoard) {
-    this.boardService.deleteBoard(board.id)
-    .subscribe(() => {
-      this.refetch$.next();
-    });
+  deleteBoard($event: Event, board: IBoard) {
+    $event.stopImmediatePropagation();
+    $event.preventDefault();
+    this.dialog.open(ConfirmComponent, {
+      data: {
+        titulo: 'Excluir quadro',
+        mensagem: 'Tem certeza que deseja excluir este quadro?',
+      },
+    }).afterClosed()
+    .pipe(
+      filter((result) => result),
+      switchMap(() => this.boardService.deleteBoard(board.id))
+    )
+    .subscribe(() => this.refetch$.next());
   }
 }
 

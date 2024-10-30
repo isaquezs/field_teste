@@ -1,23 +1,26 @@
 import { Component, inject } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { CardService } from '../../../../shared/services/card.service';
 import { ICard } from '../../../../shared/models/board.model';
+import { ConfirmComponent } from '../../../../shared/ui/confirm/confirm.component';
+import { filter, merge, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-add-card',
   standalone: true,
-  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, MatDialogModule],
   templateUrl: './add-card.component.html',
   styleUrl: './add-card.component.scss'
 })
 export class AddCardComponent {
+  private readonly matDialog = inject(MatDialog);
   private readonly dialogRef = inject(MatDialogRef);
   private readonly fb = inject(NonNullableFormBuilder);
   private readonly cardService = inject(CardService);
-  readonly data = inject(MAT_DIALOG_DATA);
+  data = inject(MAT_DIALOG_DATA);
   addCardForm = this.fb.group({
     ordem: this.fb.control(this.data.swimlane.cards.length),
     boardId: this.fb.control(this.data.boardId),
@@ -55,6 +58,20 @@ export class AddCardComponent {
         this.dialogRef.close(card);
       });
   }
+
+  deleteCard(){
+    if(!this.data.card?.id) return;
+    this.matDialog.open(ConfirmComponent, {
+      data:{
+        titulo: 'Excluir card',
+        mensagem: 'Tem certeza que deseja excluir este card?'
+      }
+    }).afterClosed().pipe(
+      filter((confirm) => confirm),
+      mergeMap(() => this.cardService.deleteCard(this.data.card.id))
+    )
+    .subscribe(() => this.dialogRef.close(true));
+}
 
   closeDialog() {
     this.dialogRef.close();

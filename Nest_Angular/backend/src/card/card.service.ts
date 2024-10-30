@@ -63,15 +63,9 @@ export class CardService {
   }
 
   async remove(id: number, userId: number) {
-    return this.cardRepository.delete({
-      id,
-      swimlane: {
-        board: {
-          users: {
-            id: userId,
-          }
-        }
-      }
-    });
+    const card = await this.cardRepository.findOneBy({id});
+    await this.userService.isConnectedToSwimlane( userId, card.swimlaneId
+    );
+    return this.cardRepository.delete({id});
   }
 }
