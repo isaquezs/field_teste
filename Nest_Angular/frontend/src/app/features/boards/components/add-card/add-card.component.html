@@ -3,7 +3,8 @@
     <mat-form-field class="example-full-width">
         <mat-label>Nome</mat-label>
         <input matInput formControlName="nome" placeholder="Ex. Meu quadro" />
-        @if (addCardForm.controls.nome.hasError('required')) {
+        
+        @if (!addCardForm.controls.nome.hasError('required')) {
         <mat-error>Nome não é válido</mat-error>
         }
     </mat-form-field>

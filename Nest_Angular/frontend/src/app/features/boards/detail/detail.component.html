@@ -14,17 +14,21 @@ class="swimlanes-wrapper"
 >
     @for(swimlane of board()?.swimlanes; track swimlane){
     <div class="swimlane" cdkDrag>
-        <div class="swimlane-header">
+        <div class="swimlane-header" cdkDragHandle>
             <h2>{{swimlane.nome}}</h2>
             <button (click)="deleteSwimlane(swimlane)" mat-button>Deletar</button>
         </div>
         <div class="swimlane-inner">
             <div>
-                <div>
-                    @for(card of swimlane.cards; track card){
-                    <div class="swimlane__card"> {{ card.nome }}</div>
-                    }
-                    <button (click)="adicionarCard(swimlane)" mat-button>Adicionar Card</button>
+                <div 
+                 cdkDropList
+                 cdkDropListOrientation="vertical" 
+                 (cdkDropListDropped)="aoMudarCard($event, swimlane)" 
+                >
+                 @for(card of swimlane.cards; track card){
+                 <div class="swimlane__card" cdkDrag> {{ card.nome }}</div>
+                 }
+                 <button (click)="adicionarCard(swimlane)" mat-button>Adicionar Card</button>
                 </div>
             </div>
         </div>

@@ -53,6 +53,14 @@ export class DetailComponent implements OnInit {
     });
   }
 
+  aoMudarCard($event: CdkDragDrop<any>, swimlane: ISwimlane): void{
+    moveItemInArray(
+      swimlane.cards || [],
+      $event.previousIndex,
+      $event.currentIndex
+    );
+  }
+
   aoMudarSwimlane($event: CdkDragDrop<any>): void {
     const _board = this.board();
     if (!_board) return;
@@ -87,7 +95,7 @@ export class DetailComponent implements OnInit {
       }
     }).afterClosed().subscribe((card?: ICard) => {
       card && this.refetch$.next();
-    })
+    });
   }
 
   addSwimlane() {
