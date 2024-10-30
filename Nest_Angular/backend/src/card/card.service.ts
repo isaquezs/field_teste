@@ -14,8 +14,8 @@ export class CardService {
     @InjectRepository(Card)
     private cardRepository: Repository<Card>,
     private swimlaneService: SwimlaneService,
-    private userService: UserService, 
-  ) {}
+    private userService: UserService,
+  ) { }
 
   async create(createCardDto: CreateCardDto, userId: number) {
     const card = new Card();
@@ -34,24 +34,28 @@ export class CardService {
   }
 
   async updateCardOrdersAndSwimlanes(
-    reorder: ReorderedCardDto, 
+    reorder: ReorderedCardDto,
     userId: number
   ) {
     await this.userService.isConnectedToBoard(userId, reorder.boardId);
 
     const promises = reorder.cards.map((card) =>
-    this.cardRepository.update(card.id, {
-      ordem: card.ordem,
-      swimlaneId: card.swimlaneId,
-    })
-  )
+      this.cardRepository.update(card.id, {
+        ordem: card.ordem,
+        swimlaneId: card.swimlaneId,
+      })
+    )
 
-  await Promise.all(promises);
+    await Promise.all(promises);
 
     return true;
   }
 
   async update(id: number, userId: number, updateCardDto: UpdateCardDto) {
+    await this.userService.isConnectedToSwimlane(
+      userId,
+      updateCardDto.swimlaneId
+    );
     return this.cardRepository.update(id, {
       nome: updateCardDto.nome,
       conteudo: updateCardDto.conteudo,

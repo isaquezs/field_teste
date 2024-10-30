@@ -6,13 +6,8 @@
 <h1>{{ board()?.nome }}</h1>
 
 <!-- Listas deve vir dos swimlanes para o board-->
-<div 
-cdkDropListGroup
-cdkDropList 
-cdkDropListOrientation="horizontal" 
-(cdkDropListDropped)="aoMudarSwimlane($event)" 
-class="swimlanes-wrapper"
->
+<div cdkDropListGroup cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="aoMudarSwimlane($event)"
+    class="swimlanes-wrapper">
     @for(swimlane of board()?.swimlanes; track swimlane){
     <div class="swimlane" cdkDrag>
         <div class="swimlane-header" cdkDragHandle>
@@ -20,20 +15,23 @@ class="swimlanes-wrapper"
             <button (click)="deleteSwimlane(swimlane)" mat-button>Deletar</button>
         </div>
         <div class="swimlane-inner">
-            <div>
-                <div 
-                 cdkDropList
-                 cdkDropListOrientation="vertical" 
-                 [cdkDropListData]="swimlane.cards"
-                 (cdkDropListDropped)="aoMudarCard($event, swimlane)" 
-                >
-                 @for(card of swimlane.cards; track card){
-                 <div class="swimlane__card" cdkDrag> {{ card.nome }}</div>
-                 }
-                 <button (click)="adicionarCard(swimlane)" mat-button>Adicionar Card</button>
-                </div>
+            <div 
+            class="swimlane-inner_dragzone"
+             cdkDropList 
+             cdkDropListOrientation="vertical" 
+             [cdkDropListData]="swimlane.cards"
+             (cdkDropListDropped)="aoMudarCard($event, swimlane)"
+            >
+              @for(card of swimlane.cards; track card){
+              <button class="swimlane__card" 
+              cdkDrag
+              (click)="adicionarOuEditarCard(swimlane, card)"
+              > {{ card.nome }}
+              </button>
+             }
             </div>
         </div>
+        <button (click)="adicionarOuEditarCard(swimlane)" mat-button>Adicionar Card</button>
     </div>
     }
     <div class="swimlane">

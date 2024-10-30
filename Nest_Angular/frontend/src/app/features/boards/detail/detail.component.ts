@@ -41,9 +41,6 @@ export class DetailComponent implements OnInit {
   swimlaneForm = this.fb.group({
     nome: this.fb.control('', Validators.required),
   });
-  cardForm = this.fb.group({
-    nome: this.fb.control('', Validators.required),
-  });
 
   ngOnInit() {
     this.refetch$.next();
@@ -115,10 +112,9 @@ export class DetailComponent implements OnInit {
       .subscribe(() => {
         this.refetch$.next();
       });
-    console.log(this.board()?.swimlanes)
   }
 
-  adicionarCard(swimlane: ISwimlane, card?: ICard) {
+  adicionarOuEditarCard(swimlane: ISwimlane, card?: ICard) {
     this.matDialog.open(AddCardComponent, {
       width: '600px',
       data: {

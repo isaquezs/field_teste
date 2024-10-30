@@ -55,6 +55,11 @@
                 box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
                 padding: 16px 16px 24px;
                 border-radius: 4px;
+                .swimlane-inner_dragzone{
+                    min-height: 50px;
+            }
+
+
             }
         }
     }
