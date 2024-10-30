@@ -21,6 +21,10 @@ export class Board {
   })
   users: User[];
 
-  @OneToMany(() => Swimlane, (board) => board.board)
+  @OneToMany(() => Swimlane, (swimlane) => swimlane.board, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   swimlanes: Swimlane[];
+  
 }

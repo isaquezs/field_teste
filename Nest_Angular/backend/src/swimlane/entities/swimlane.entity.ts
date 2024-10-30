@@ -23,9 +23,11 @@ export class Swimlane {
   @Column()
   boardId: number;
 
-  @ManyToOne(() => Board, (board) => board.swimlanes)
-  @JoinColumn()
+  @ManyToOne(() => Board, (board) => board.swimlanes, {
+    onDelete: 'CASCADE',
+  })
   board: Board;
+  
 
   @OneToMany(() => Card, (card) => card.swimlane)
   cards: Card[];

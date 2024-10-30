@@ -32,7 +32,10 @@ export class Card {
   @Column()
   swimlaneId: number;
 
-  @ManyToOne(() => Swimlane, (swimlane) => swimlane.cards)
+  @ManyToOne(() => Swimlane, (swimlane) => swimlane.cards, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   swimlane: Swimlane;
+  
 }

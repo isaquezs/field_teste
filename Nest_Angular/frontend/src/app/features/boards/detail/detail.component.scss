@@ -80,9 +80,10 @@
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 16px 16px 24px;
         border-radius: 4px;
+        min-height: 80px;
 
         .swimlane-inner__dragzone {
-          min-height: 50px;
+          min-height: 80px;
         }
       }
     }
