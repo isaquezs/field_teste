@@ -29,6 +29,7 @@ export class RegisterComponent {
     sobrenome: this.fb.control('', [Validators.required])
   });
 
+  // realizar registro
   register() {
     if (this.registerForm.invalid) {
       console.log("Formulário inválido!");

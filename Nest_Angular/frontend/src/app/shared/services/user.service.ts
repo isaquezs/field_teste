@@ -8,10 +8,11 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
   http = inject(HttpClient);
-
+  // Método para fazer login no frontend
   login(login: ILogin): Observable<ILoginRespose> {
     return this.http.post<ILoginRespose>('/api/auth/login', login);    
   }
+  // Método para fazer logout no frontend
   register(register: IRegister) {
     return this.http.post<ILoginRespose>('/api/auth/register', register);
   }

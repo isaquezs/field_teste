@@ -20,6 +20,7 @@ import { ReorderedSwimlaneDto } from './dto/reorder-swimlane.dto';
 export class SwimlaneController {
   constructor(private readonly swimlaneService: SwimlaneService) {}
 
+  // Cria uma nova swimlane
   @Post()
   @UseGuards(AuthGuard)
   create(
@@ -28,7 +29,7 @@ export class SwimlaneController {
   ) {
     return this.swimlaneService.create(createSwimlaneDto, req.user.id);
   }
-  
+  // Atualiza a ordem das swimlanes
   @Put('update-order')
   @UseGuards(AuthGuard)
   updateOrder(
@@ -41,12 +42,15 @@ export class SwimlaneController {
     );
   }
 
+  // Retorna todas as swimlanes associadas ao board
   @Get('/board/:boardId')
   @UseGuards(AuthGuard)
   findAll(@Param('boardId') boardId: string, @Request() req: PayloadRequest) {
     return this.swimlaneService.findAllByBoardId(Number(boardId), req.user.id);
   }
 
+  // Retorna uma swimlane específica associada ao board
+  // Retorna também as cards associadas à swimlane
   @Patch(':id')
   @UseGuards(AuthGuard)
   update(
@@ -57,6 +61,7 @@ export class SwimlaneController {
     return this.swimlaneService.update(+id, req.user.id, updateSwimlaneDto);
   }
 
+  // Remove uma swimlane
   @Delete(':id')
   @UseGuards(AuthGuard)
   remove(@Param('id') id: string, @Request() req: PayloadRequest) {

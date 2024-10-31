@@ -32,6 +32,10 @@ export class ListComponent {
     this.refetch$.next();
   }
 
+
+    // Abre um diálogo para adicionar um novo quadro (board).
+    // Este método interrompe a propagação imediata do evento e previne a ação padrão.
+    // Após o fechamento do diálogo, se um quadro for retornado, ele dispara um evento para refetch.
   openNewBoardFlow($event: Event, board?: IBoard) {
     $event.stopImmediatePropagation();
     $event.preventDefault();
@@ -47,6 +51,10 @@ export class ListComponent {
       });
   }
 
+  // Deleta um quadro (board).
+  // Este método interrompe a propagação imediata do evento e previne a ação padrão.
+  // Após a confirmação do diálogo, ele deleta o quadro e dispara um evento para refetch.
+  
   deleteBoard($event: Event, board: IBoard) {
     $event.stopImmediatePropagation();
     $event.preventDefault();

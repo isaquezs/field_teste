@@ -29,6 +29,7 @@ export class AddCardComponent {
     conteudo: this.fb.control(this.data.card?.conteudo, [Validators.required]),
   });
 
+  // criar ou editar card
   criarOuEditarCard() {
     if (this.addCardForm.invalid) {
       return;
@@ -43,6 +44,7 @@ export class AddCardComponent {
     }
   }
 
+  //  atualizar card
   private _updateCard() {
     this.cardService
       .updateCard(this.data.card?.id, this.addCardForm.value as Partial<ICard>)
@@ -50,7 +52,7 @@ export class AddCardComponent {
         this.dialogRef.close(card);
       });
   }
-
+// criar card
   private _createCard() {
     this.cardService
       .createCard(this.addCardForm.value as Partial<ICard>)
@@ -59,6 +61,7 @@ export class AddCardComponent {
       });
   }
 
+  // excluir card
   deleteCard(){
     if(!this.data.card?.id) return;
     this.matDialog.open(ConfirmComponent, {

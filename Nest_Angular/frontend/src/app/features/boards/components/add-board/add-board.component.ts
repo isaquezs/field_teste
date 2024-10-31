@@ -22,6 +22,7 @@ export class AddBoardComponent {
     nome: this.fb.control(this.data.board?.nome, [Validators.required]),
   });
 
+  // criar ou editar quadro
   createOrEditBoard() {
     if (this.addBoardForm.invalid) {
       return;
@@ -36,6 +37,7 @@ export class AddBoardComponent {
     }
   }
 
+  // atualizar quadro
   private _updateBoard() {
     this.boardService
       .updateBoard(this.data.board?.id, this.addBoardForm.value as ICreateBoard)
@@ -44,6 +46,7 @@ export class AddBoardComponent {
       });
   }
 
+  // criar quadro
   private _createBoard() {
     this.boardService
       .createBoard(this.addBoardForm.value as ICreateBoard)

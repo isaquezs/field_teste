@@ -12,6 +12,7 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
+  // Verifica se o usuário está associado ao board
   create(createUserDto: RegisterDto) {
     const user = new User();
     user.email = createUserDto.email;
@@ -21,10 +22,12 @@ export class UserService {
     return this.userRepository.save(user);
   }
 
+  // Retorna um usuário específico
   findOne(id: number) {
     return this.userRepository.findOneBy({ id });
   }
 
+  // Verifica se o usuário está associado ao board
   async isConnectedToBoard(id: number, boardId: number) {
     const user = await this.userRepository.findOne({
       where: {
@@ -43,6 +46,7 @@ export class UserService {
     return true;
   }
 
+  // Verifica se o usuário está associado à swimlane
   async isConnectedToSwimlane(id: number, swimlaneId: number) {
     const user = await this.userRepository.findOne({
       where: {
@@ -63,6 +67,7 @@ export class UserService {
     return true;
   }
 
+  // Atualiza um usuário
   update(id: number, updateUserDto: UpdateUserDto) {
     return this.userRepository.update(id, {
       nome: updateUserDto.nome,
@@ -70,6 +75,7 @@ export class UserService {
     });
   }
 
+  // Remove um usuário
   remove(id: number) {
     return this.userRepository.delete(id);
   }

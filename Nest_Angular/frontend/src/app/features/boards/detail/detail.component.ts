@@ -40,6 +40,7 @@ export class DetailComponent implements OnInit {
           )))
   );
 
+  // criar ou editar seção
   private readonly fb = inject(NonNullableFormBuilder);
   swimlaneForm = this.fb.group({
     nome: this.fb.control('', Validators.required),
@@ -49,6 +50,7 @@ export class DetailComponent implements OnInit {
     this.refetch$.next();
   }
 
+  // editar seção
   editSwimlane(swimlane: ISwimlane) {
     this.matDialog.open(EditSwimlaneComponent, {
       width: '600px',
@@ -56,6 +58,13 @@ export class DetailComponent implements OnInit {
     }).afterClosed().subscribe(() => this.refetch$.next());
   }
 
+  
+
+  //  Manipula a mudança de posição de um card dentro de um swimlane ou entre swimlanes.
+  //  O método verifica se o card foi movido dentro do mesmo container ou para um container diferente.
+  //  Se for dentro do mesmo container, a ordem dos cards é atualizada.
+  //  Se for para um container diferente, o card é transferido para o novo container.
+  //  Após a movimentação, a ordem dos cards e os swimlanes são atualizados no backend.
   aoMudarCard($event: CdkDragDrop<any>, swimlane: ISwimlane): void {
     console.log($event, swimlane);
     if ($event.previousContainer === $event.container) {
@@ -95,6 +104,9 @@ export class DetailComponent implements OnInit {
     });
   }
 
+  // Manipula a mudança de posição de uma swimlane.
+  // A ordem das swimlanes é atualizada e enviada para o backend.
+
   aoMudarSwimlane($event: CdkDragDrop<any>): void {
     const _board = this.board();
     if (!_board) return;
@@ -118,6 +130,7 @@ export class DetailComponent implements OnInit {
       });
   }
 
+  // Adiciona ou edita um card.
   adicionarOuEditarCard(swimlane: ISwimlane, card?: ICard) {
     this.matDialog.open(AddCardComponent, {
       width: '600px',
@@ -130,6 +143,14 @@ export class DetailComponent implements OnInit {
       card && this.refetch$.next();
     });
   }
+
+
+  // Adiciona uma nova swimlane ao quadro atual.
+  //  Este método verifica se o formulário de swimlane é válido. Se for inválido, a execução é interrompida.
+  //  Em seguida, obtém o quadro atual. Se o quadro não existir, a execução é interrompida.
+  //  Se o formulário for válido e o quadro existir, uma nova swimlane é criada com os dados fornecidos
+  //  pelo formulário. Após a criação bem-sucedida da swimlane, o formulário é redefinido e um evento
+  //  de refetch é emitido.
 
   addSwimlane() {
     if (this.swimlaneForm.invalid) {

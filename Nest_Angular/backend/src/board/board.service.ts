@@ -14,6 +14,7 @@ export class BoardService {
     private userService: UserService,
   ) {}
 
+  // Verifica se o usuário está associado ao board
   async isUserAssociatedWithBoard(boardId: number, userId: number) {
     const count = await this.boardRepository.count({
       where: { id: boardId, users: { id: userId } },
@@ -25,6 +26,8 @@ export class BoardService {
     return true;
   }
 
+  // Cria um novo board
+  // O usuário que criou o board é associado a ele
   async create(createBoardDto: CreateBoardDto, userId: number) {
     const board = new Board();
     board.nome = createBoardDto.nome;
@@ -33,6 +36,7 @@ export class BoardService {
     return this.boardRepository.save(board);
   }
 
+  // Retorna todos os boards associados ao usuário
   findAllByUserId(userId: number) {
     return this.boardRepository.find({
       where: { users: { id: userId } },
@@ -40,6 +44,7 @@ export class BoardService {
     });
   }
 
+  // Retorna um board específico associado ao usuário
   findOne(id: number, userId: number) {
     return this.boardRepository.findOne({
       where: {
@@ -50,6 +55,7 @@ export class BoardService {
     });
   }
 
+  // Atualiza um board
   async update(id: number, userId: number, updateBoardDto: UpdateBoardDto) {
     await this.isUserAssociatedWithBoard(id, userId);
     return this.boardRepository.update(id, {
@@ -57,6 +63,7 @@ export class BoardService {
     });
   }
 
+  // Remove um board
   async remove(id: number, userId: number) {
     await this.isUserAssociatedWithBoard(id, userId);
     return this.boardRepository.delete(id);

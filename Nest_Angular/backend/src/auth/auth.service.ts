@@ -16,7 +16,16 @@ export class AuthService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
+
+
+
+  //  Realiza o login de um usuário.
+
+  //   @param loginDto - Objeto contendo as credenciais de login do usuário.
+  //   @returns Um objeto contendo o token de acesso JWT.
+  //   @throws NotFoundException - Se o usuário não for encontrado.
+  //   @throws UnauthorizedException - Se a senha estiver incorreta.
 
   async login(loginDto: LoginDto) {
     const user = await this.userRepository.findOne({

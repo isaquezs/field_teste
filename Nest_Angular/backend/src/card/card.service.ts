@@ -17,6 +17,9 @@ export class CardService {
     private userService: UserService,
   ) { }
 
+  // Cria um novo card
+  // Verifica se o usuário tem acesso à swimlane onde o card será criado 
+  // Se não tiver acesso, retorna um erro de não autorizado 
   async create(createCardDto: CreateCardDto, userId: number) {
     const card = new Card();
     card.nome = createCardDto.nome;
@@ -33,6 +36,9 @@ export class CardService {
     return this.cardRepository.save(card);
   }
 
+  // Atualiza a ordem dos cards
+  // Verifica se o usuário tem acesso ao board onde o card será movido
+  // Se não tiver acesso, retorna um erro de não autorizado
   async updateCardOrdersAndSwimlanes(
     reorder: ReorderedCardDto,
     userId: number
@@ -51,6 +57,10 @@ export class CardService {
     return true;
   }
 
+  // Atualiza um card
+  // Verifica se o usuário tem acesso à swimlane onde o card será atualizado
+  // Retorna o card atualizado
+
   async update(id: number, userId: number, updateCardDto: UpdateCardDto) {
     await this.userService.isConnectedToSwimlane(
       userId,
@@ -62,6 +72,7 @@ export class CardService {
     });
   }
 
+  // Remove um card
   async remove(id: number, userId: number) {
     const card = await this.cardRepository.findOneBy({id});
     await this.userService.isConnectedToSwimlane( userId, card.swimlaneId

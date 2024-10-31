@@ -16,6 +16,8 @@ export class SwimlaneService {
     private userService: UserService,
   ) {}
 
+  // Cria uma nova swimlane
+  // Verifica se o usuário tem acesso ao board onde a swimlane será criada
   async create(createSwimlaneDto: CreateSwimlaneDto, userId: number) {
     const swimlane = new Swimlane();
     swimlane.nome = createSwimlaneDto.nome;
@@ -26,6 +28,8 @@ export class SwimlaneService {
     return this.swimlaneRepository.save(swimlane);
   }
   
+  // Atualiza a ordem das swimlanes
+  // Verifica se o usuário tem acesso ao board onde a swimlane será movida
   async updateSwimlaneOrders(
     reorder: ReorderedSwimlaneDto, 
     userId: number
@@ -41,6 +45,7 @@ export class SwimlaneService {
     return true;
   }
 
+  // Verifica se o usuário tem acesso à swimlane
   async hasAccessToSwimlane(swimlaneId: number, userId: number) {
     const hasAccess = await this.swimlaneRepository.count({
       where: {
@@ -52,6 +57,7 @@ export class SwimlaneService {
     return hasAccess > 0;
   }
 
+  // Retorna todas as swimlanes associadas ao board
   findAllByBoardId(boardId: number, userId: number) {
     return this.swimlaneRepository.find({
       where: {
@@ -60,7 +66,7 @@ export class SwimlaneService {
       },
     });
   }
-
+// Retorna uma swimlane específica associada ao board
   async update(
     id: number,
     userId: number,
@@ -75,6 +81,7 @@ export class SwimlaneService {
     });
   }
 
+  // Remove uma swimlane
   async remove(id: number, userId: number) {
     await this.userService.isConnectedToSwimlane(userId, id);
     return this.swimlaneRepository.delete(id);

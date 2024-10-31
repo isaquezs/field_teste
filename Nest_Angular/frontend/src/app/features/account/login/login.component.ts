@@ -27,6 +27,7 @@ export class LoginComponent {
     ]),
   });
 
+  // realizar login
   login() {
     if (this.loginForm.invalid) {
       return;

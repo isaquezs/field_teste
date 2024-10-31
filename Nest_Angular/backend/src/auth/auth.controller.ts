@@ -11,6 +11,7 @@ export class AuthController {
     private userService: UserService,
   ) {}
 
+  // Cria um novo usuário e realiza o login.
   @Post('register')
   async create(@Body() registerDto: RegisterDto) {
     registerDto.email = registerDto.email.toLowerCase();
@@ -23,7 +24,8 @@ export class AuthController {
       senha: registerDto.senha,
     });
   }
-
+  
+  // Realiza o login de um usuário.
   @Post('login')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);

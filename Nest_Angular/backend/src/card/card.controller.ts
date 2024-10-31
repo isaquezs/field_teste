@@ -19,12 +19,14 @@ import { ReorderedCardDto } from './dto/reorder-cards.dto';
 export class CardController {
   constructor(private readonly cardService: CardService) { }
 
+  //  Cria um novo card
   @Post()
   @UseGuards(AuthGuard)
   create(@Body() createCardDto: CreateCardDto, @Request() req: PayloadRequest) {
     return this.cardService.create(createCardDto, req.user.id);
   }
 
+  // Atualiza a ordem dos cards
   @Put('update-order')
   @UseGuards(AuthGuard)
   updateOrder(
@@ -34,6 +36,7 @@ export class CardController {
       reorderCards,
       req.user.id);
   }
+  // Atualiza um card
   @Patch(':id')
   @UseGuards(AuthGuard)
   update(
@@ -44,6 +47,7 @@ export class CardController {
     return this.cardService.update(+id, req.user.id, updateCardDto);
   }
 
+  // Remove um card
   @Delete(':id')
   @UseGuards(AuthGuard)
   remove(@Param('id') id: string, @Request() req: PayloadRequest) {

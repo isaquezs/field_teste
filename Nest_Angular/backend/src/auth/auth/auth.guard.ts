@@ -15,8 +15,11 @@ export interface PayloadRequest extends Request {
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(private jwtService: JwtService) { }
 
+
+  // Se o token estiver ausente ou for inválido, uma UnauthorizedException é lançada.
+  // Se o token for válido, o payload é anexado ao objeto de requisição.
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this._extractTokenFromHeader(request);
@@ -32,6 +35,8 @@ export class AuthGuard implements CanActivate {
 
     return true;
   }
+
+  //  Extrai o token do cabeçalho de autorização da requisição.
 
   private _extractTokenFromHeader(request: Request): string | undefined {
     const authHeader = request.headers['authorization'];

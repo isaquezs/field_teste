@@ -44,6 +44,7 @@ export class EditSwimlaneComponent {
     nome: this.fb.control(this.data.swimlane.name, [Validators.required]),
   });
 
+  // atualizar seção
   updateSwimlane() {
     if (this.swimlaneForm.invalid) {
       return;
@@ -56,6 +57,7 @@ export class EditSwimlaneComponent {
       });
   }
 
+  // deletar seção
   deleteSwimlane() {
     this.matDialog
       .open(ConfirmComponent, {
