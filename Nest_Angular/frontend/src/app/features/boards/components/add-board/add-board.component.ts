@@ -23,33 +23,33 @@ export class AddBoardComponent {
   });
 
   // criar ou editar quadro
-  createOrEditBoard() {
+  criarOuEditarBoard() {
     if (this.addBoardForm.invalid) {
       return;
     }
 
     if (this.data.board?.id) {
-      this._updateBoard();
+      this._atualizarBoard();
     }
 
     else {
-      this._createBoard();
+      this._criarBoard();
     }
   }
 
   // atualizar quadro
-  private _updateBoard() {
+  private _atualizarBoard() {
     this.boardService
-      .updateBoard(this.data.board?.id, this.addBoardForm.value as ICreateBoard)
+      .atualizarBoard(this.data.board?.id, this.addBoardForm.value as ICreateBoard)
       .subscribe((board: IBoard) => {
         this.dialogRef.close(board);
       });
   }
 
   // criar quadro
-  private _createBoard() {
+  private _criarBoard() {
     this.boardService
-      .createBoard(this.addBoardForm.value as ICreateBoard)
+      .criarBoard(this.addBoardForm.value as ICreateBoard)
       .subscribe((board: IBoard) => {
         this.dialogRef.close(board);
       });

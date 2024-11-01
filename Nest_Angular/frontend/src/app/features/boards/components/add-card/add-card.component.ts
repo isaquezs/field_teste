@@ -36,33 +36,33 @@ export class AddCardComponent {
     }
 
     if (this.data.card?.id) {
-      this._updateCard();
+      this._atualizarCard();
     }
 
     else {
-      this._createCard();
+      this._criarCard();
     }
   }
 
   //  atualizar card
-  private _updateCard() {
+  private _atualizarCard() {
     this.cardService
-      .updateCard(this.data.card?.id, this.addCardForm.value as Partial<ICard>)
+      .atualizarCard(this.data.card?.id, this.addCardForm.value as Partial<ICard>)
       .subscribe((card: ICard) => {
         this.dialogRef.close(card);
       });
   }
 // criar card
-  private _createCard() {
+  private _criarCard() {
     this.cardService
-      .createCard(this.addCardForm.value as Partial<ICard>)
+      .criarCard(this.addCardForm.value as Partial<ICard>)
       .subscribe((card: ICard) => {
         this.dialogRef.close(card);
       });
   }
 
   // excluir card
-  deleteCard(){
+  deletarCard(){
     if(!this.data.card?.id) return;
     this.matDialog.open(ConfirmComponent, {
       data:{
@@ -71,7 +71,7 @@ export class AddCardComponent {
       }
     }).afterClosed().pipe(
       filter((confirm) => confirm),
-      mergeMap(() => this.cardService.deleteCard(this.data.card.id))
+      mergeMap(() => this.cardService.deletarCard(this.data.card.id))
     )
     .subscribe(() => this.dialogRef.close(true));
 }

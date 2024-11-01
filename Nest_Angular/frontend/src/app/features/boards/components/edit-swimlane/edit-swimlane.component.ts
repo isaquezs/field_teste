@@ -45,20 +45,20 @@ export class EditSwimlaneComponent {
   });
 
   // atualizar seção
-  updateSwimlane() {
+  _atualizarSwimlane() {
     if (this.swimlaneForm.invalid) {
       return;
     }
 
     this.swimlaneService
-      .updateSwimlane(this.swimlaneForm.value as IUpdateSwimlane)
+      .atualizarSwimlane(this.swimlaneForm.value as IUpdateSwimlane)
       .subscribe((swimlane: ISwimlane) => {
       this.dialogRef.close(swimlane);
       });
   }
 
   // deletar seção
-  deleteSwimlane() {
+  _deletarSwimlane() {
     this.matDialog
       .open(ConfirmComponent, {
         data: {
@@ -70,7 +70,7 @@ export class EditSwimlaneComponent {
       .pipe(
         filter((confirm) => confirm),
         mergeMap(() =>
-          this.swimlaneService.deleteSwimlane(this.data.swimlane.id)
+          this.swimlaneService.deletarSwimlane(this.data.swimlane.id)
         )
       )
       .subscribe(() => {

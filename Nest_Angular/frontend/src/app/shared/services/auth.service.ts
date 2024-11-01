@@ -35,7 +35,7 @@ export class AuthService {
   // O método retorna true se o token for válido e false caso contrário
   // O método é usado para verificar se o usuário está autenticado
   // antes de acessar rotas protegidas no frontend 
-  hasValidToken(): boolean {
+  temTokenValido(): boolean {
     const token = this._token();
     if (!token) return false;
     const decodedToken = jwtDecode(token);

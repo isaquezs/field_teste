@@ -9,15 +9,15 @@ import { Observable } from 'rxjs';
 export class SwimlanesService {
   http = inject(HttpClient);
   // Método para criar uma nova coluna no frontend
-  createSwimlane(createSwimlane: ICreateSwimlane): Observable<ISwimlane> {
+  criarSwimlane(createSwimlane: ICreateSwimlane): Observable<ISwimlane> {
     return this.http.post<ISwimlane>('/api/swimlane', createSwimlane);
   }
   // Método para atualizar a ordem das colunas no frontend
-  updateSwimlane(updateSwimlane: IUpdateSwimlane): Observable<ISwimlane> {
+  atualizarSwimlane(updateSwimlane: IUpdateSwimlane): Observable<ISwimlane> {
     return this.http.patch<ISwimlane>(`/api/swimlane/${updateSwimlane.id}`, updateSwimlane);
   }
   // Método para deletar uma coluna no frontend
-  deleteSwimlane(swimlaneId: number): Observable<void> {
+  deletarSwimlane(swimlaneId: number): Observable<void> {
     return this.http.delete<void>(`/api/swimlane/${swimlaneId}`);
   }
   // Método para obter uma coluna por id no frontend

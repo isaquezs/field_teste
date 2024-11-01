@@ -20,19 +20,19 @@ export class BoardService {
   http = inject(HttpClient);
 
   // Método para criar um novo quadro no frontend 
-  createBoard(createBoard: ICreateBoard): Observable<IBoard> {
+  criarBoard(createBoard: ICreateBoard): Observable<IBoard> {
     return this.http.post<IBoard>('/api/board', createBoard);
   }
   // Método para atualizar a ordem das colunas no frontend 
-  updateSwimlaneOrder(reorder: ReordereSwimlaneDto): Observable<void> {
+  atualizarOrdemSwimlane(reorder: ReordereSwimlaneDto): Observable<void> {
     return this.http.put<void>('/api/swimlane/update-order', reorder);
   }
   // Método para atualizar um quadro no frontend
-  updateBoard(id: number, createBoard: ICreateBoard): Observable<IBoard> {
+  atualizarBoard(id: number, createBoard: ICreateBoard): Observable<IBoard> {
     return this.http.patch<IBoard>(`/api/board/${id}`, createBoard);
   }
   // Método para deletar um quadro no frontend
-  deleteBoard(boardId: number): Observable<void> {
+  deletarBoard(boardId: number): Observable<void> {
     return this.http.delete<void>(`/api/board/${boardId}`);
   }
   // Método para obter um quadro por

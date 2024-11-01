@@ -8,7 +8,7 @@
         }
     </mat-form-field>
     <div class="button-group">
-        <button (click)="createOrEditBoard()" type="button" mat-flat-button color="primary">{{ data.board?.id ? "Editar":
+        <button (click)="criarOuEditarBoard()" type="button" mat-flat-button color="primary">{{ data.board?.id ? "Editar":
             "Adicionar"}} board</button>
         <button (click)="closeDialog()" type="button" mat-flat-button color="secondary">Fechar </button>
     </div>

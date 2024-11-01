@@ -51,7 +51,7 @@ export class DetailComponent implements OnInit {
   }
 
   // editar seção
-  editSwimlane(swimlane: ISwimlane) {
+  editarSwimlane(swimlane: ISwimlane) {
     this.matDialog.open(EditSwimlaneComponent, {
       width: '600px',
       data: { swimlane }
@@ -117,7 +117,7 @@ export class DetailComponent implements OnInit {
     );
 
     this.boardService
-      .updateSwimlaneOrder({
+      .atualizarOrdemSwimlane({
         boardId: _board.id,
         items:
           _board.swimlanes?.map((swimlane, index) => ({
@@ -152,7 +152,7 @@ export class DetailComponent implements OnInit {
   //  pelo formulário. Após a criação bem-sucedida da swimlane, o formulário é redefinido e um evento
   //  de refetch é emitido.
 
-  addSwimlane() {
+  adicionarSwimlane() {
     if (this.swimlaneForm.invalid) {
       return;
     };
@@ -160,7 +160,7 @@ export class DetailComponent implements OnInit {
     if (!_board) return;
 
     this.swimlaneService
-      .createSwimlane({
+      .criarSwimlane({
         nome: this.swimlaneForm.value.nome as string,
         boardId: _board.id,
         ordem: _board.swimlanes?.length || 0

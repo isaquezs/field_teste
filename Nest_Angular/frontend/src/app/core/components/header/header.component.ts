@@ -14,7 +14,7 @@ export class HeaderComponent {
   private readonly router = inject(Router);
 
   // Verifica se o usuário está logado
-  get isLoggedIn() {
+  get estaLogado() {
     return this.authService.token;
   }
 

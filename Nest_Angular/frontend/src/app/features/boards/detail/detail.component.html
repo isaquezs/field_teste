@@ -11,8 +11,6 @@
     <h1 class="kb-board-title">{{ board()?.nome }}</h1>
   </div>
   
-  <!-- Lists should come from swimlanes for the board -->
-  
   <div
     cdkDropListGroup
     cdkDropList
@@ -28,7 +26,7 @@
           <button
             color="secondary"
             mat-stroked-button
-            (click)="editSwimlane(swimlane)"
+            (click)="editarSwimlane(swimlane)"
           >
             Edit
           </button>
@@ -54,7 +52,7 @@
           }
         </div>
       </div>
-      <button (click)="adicionarOuEditarCard(swimlane)" mat-button>Add card</button>
+      <button (click)="adicionarOuEditarCard(swimlane)" mat-button>Adicionar Card</button>
     </div>
     }
     <div class="swimlane">
@@ -66,11 +64,11 @@
             <input matInput formControlName="nome" placeholder="Ex. Todo" />
   
             @if (!swimlaneForm.controls.nome.hasError('required')) {
-            <mat-error>Please enter a valid name</mat-error>
+            <mat-error>Porfavor coloque um nome válido</mat-error>
             } </mat-form-field
           ><br />
-          <button type="button" (click)="addSwimlane()" color="primary" mat-flat-button>
-            Add swimlane
+          <button type="button" (click)="adicionarSwimlane()" color="primary" mat-flat-button>
+            Adicionar Seção
           </button>
         </form>
       </div>

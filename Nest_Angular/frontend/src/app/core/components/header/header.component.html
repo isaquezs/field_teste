@@ -5,7 +5,7 @@
         </li>
         <li class="menu-items">
             <!-- Se o usuario está logado, a aba de Boards e Logout aparecem -->
-            @if (isLoggedIn()){
+            @if (estaLogado()){
             <a [routerLinkActive]="'active'" routerLink="/boards">Boards</a>
             <a (click)="logout()">Logout</a>
             <!-- Se nao estiver logado, aparece a aba de login/register -->
